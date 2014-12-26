@@ -1,40 +1,48 @@
 public class VacuumWorld {
-	public int worldSize; //number of squares in the vacuum world
-	public int[] world; //world in matrix form
+	public int worldRow;
+	public int worldColumn;
+	public int[][] world; //world in matrix form
 	public int performance; //award one point for each clean square at each time step
 	
 	
-	public VacuumWorld(int size){
-		worldSize = size;
-		world = new int[size];
+	public VacuumWorld(int row, int column){
+		worldRow = row;
+		worldColumn = column;
+		world = new int[row][column];
 		
 		//randomize dirt placement and update current performance
-		for(int i = 0; i < size; i++){
-			if(Math.random() > 0.5){
-				world[i] = 1;
-			}
-			else{
-				world[i] = 0;
-				performance++;
+		for(int i = 0; i < row; i++){
+			for(int j = 0; j < column; j++){
+				if(Math.random() > 0.5){
+					world[i][j] = 1;
+				}
+				else{
+					world[i][j] = 0;
+					performance++;
+				}
 			}
 		}
 	}
 	
-	public int[] getWorld(){
+	public int[][] getWorld(){
 		return world;
 	}
 	
-	public int getWorldSize(){
-		return worldSize;
+	public int getRow(){
+		return worldRow;
 	}
 	
-	public String toString(){
-		StringBuilder a = new StringBuilder();
-		
-		for(int i = 0; i < worldSize; i++){
-			a.append(world[i]);
+	public int getColumn(){
+		return worldColumn;
+	}
+	
+	public void printWorld(){
+		for (int i = 0; i < worldRow; i++) {
+		    for (int j = 0; j < worldColumn; j++) {
+		        System.out.print(world[i][j] + " ");
+		    }
+		    System.out.print("\n");
 		}
-		return a.toString();
 	}
 	
 	/*
@@ -43,8 +51,8 @@ public class VacuumWorld {
 	 * @param location in the matrix
 	 * @return void
 	 */
-	public void clean(int i){
-		world[i] = 0;
+	public void clean(int i, int j){
+		world[i][j] = 0;
 		performance++;
 	}
 	
@@ -54,13 +62,17 @@ public class VacuumWorld {
 	 * @oaram location in the matrix
 	 * @return true if the tile is clean and false if the tile is dirty
 	 */
-	public boolean isClean(int i){
-		if(world[i] == 0){
+	public boolean isClean(int i, int j){
+		if(world[i][j] == 0){
 			return true;
 		}
 		else{
 			return false;
 		}
+	}
+	
+	public void placeObstacle(int i, int j){
+		world[i][j] = 2;
 	}
 	
 	public int getPerformance(){
